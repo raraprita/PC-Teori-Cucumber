@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Deteksi Penyakit Timun</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family: Arial, sans-serif;
+            background:#eef7ee;
+            padding:40px;
+        }
+
+        .container{
+            max-width:1000px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:20px;
+            box-shadow:0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h1{
+            text-align:center;
+            color:#2e7d32;
+            margin-bottom:10px;
+        }
+
+        .subtitle{
+            text-align:center;
+            color:#666;
+            margin-bottom:30px;
+        }
+
+        form{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        input[type=file]{
+            padding:10px;
+        }
+
+        button{
+            margin-top:15px;
+            padding:12px 25px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#1b5e20;
+        }
+
+        .result-card{
+            margin-top:25px;
+            padding:20px;
+            border-radius:15px;
+            background:#f7fff7;
+            border-left:6px solid #2e7d32;
+        }
+
+        .result-title{
+            font-size:28px;
+            color:#1b5e20;
+            margin-bottom:15px;
+            font-weight:bold;
+        }
+
+        .info{
+            margin-bottom:12px;
+            font-size:18px;
+        }
+
+        .label{
+            font-weight:bold;
+            color:#2e7d32;
+        }
+
+        .image-box{
+            margin-top:30px;
+            text-align:center;
+        }
+
+        .image-box img{
+            width:100%;
+            max-width:700px;
+            border-radius:15px;
+            border:3px solid #ddd;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌱 Sistem Deteksi Penyakit Timun</h1>
+
+    <p class="subtitle">
+        Upload gambar daun atau buah timun untuk mendeteksi penyakit menggunakan YOLOv8
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input
+            type="file"
+            name="image"
+            accept="image/*"
+            required
+        >
+
+        <br>
+
+        <button type="submit">
+            🔍 Deteksi Penyakit
+        </button>
+
+    </form>
+
+    {% if prediction %}
+
+    <div class="result-card">
+
+        <div class="result-title">
+            Hasil Deteksi
+        </div>
+
+        <div class="info">
+            <span class="label">Nama Penyakit:</span>
+            {{ prediction }}
+        </div>
+
+        {% if confidence %}
+        <div class="info">
+            <span class="label">Tingkat Keyakinan:</span>
+            {{ "%.2f"|format(confidence * 100) }} %
+        </div>
+        {% endif %}
+
+        {% if description %}
+        <div class="info">
+            <span class="label">Deskripsi:</span>
+            {{ description }}
+        </div>
+        {% endif %}
+
+        {% if solution %}
+        <div class="info">
+            <span class="label">Saran Penanganan:</span>
+            {{ solution }}
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+    {% if image_path %}
+
+    <div class="image-box">
+
+        <h2 style="margin-bottom:15px;">
+            Gambar Hasil Deteksi
+        </h2>
+
+        <img src="{{ image_path }}">
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
